@@ -1,0 +1,47 @@
+<idea-plugin>
+    <id>com.zombiedetector.phpdead</id>
+    <name>PHP Dead &amp; Zombie Code Detector</name>
+    <vendor email="support@example.com" url="https://example.com">ZombieDetector</vendor>
+    <description>
+        Project-wide PHP Dead &amp; Zombie Code Detector using PHP PSI: indexes definitions, builds a call graph,
+        computes reachability from configurable entry points, and reports unused code via inspections and a tool window.
+    </description>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.jetbrains.php</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Persistent settings -->
+        <projectService serviceImplementation="com.zombiedetector.settings.DeadCodeSettings"/>
+
+        <!-- Analyzer service (cache + background computation) -->
+        <projectService serviceImplementation="com.zombiedetector.analysis.DeadCodeAnalyzer"/>
+
+        <!-- Inspections -->
+        <localInspection language="PHP"
+                         shortName="DeadMethodInspection"
+                         displayName="Dead PHP method (project-wide)"
+                         groupName="PHP Dead &amp; Zombie Code Detector"
+                         enabledByDefault="true"
+                         implementationClass="com.zombiedetector.inspections.DeadMethodInspection"/>
+        <localInspection language="PHP"
+                         shortName="DeadFunctionInspection"
+                         displayName="Dead PHP function (project-wide)"
+                         groupName="PHP Dead &amp; Zombie Code Detector"
+                         enabledByDefault="true"
+                         implementationClass="com.zombiedetector.inspections.DeadFunctionInspection"/>
+        <localInspection language="PHP"
+                         shortName="DeadClassInspection"
+                         displayName="Dead PHP class/trait (project-wide)"
+                         groupName="PHP Dead &amp; Zombie Code Detector"
+                         enabledByDefault="true"
+                         implementationClass="com.zombiedetector.inspections.DeadClassInspection"/>
+
+        <!-- Tool Window -->
+        <toolWindow id="Dead &amp; Zombie Code"
+                    factoryClass="com.zombiedetector.ui.DeadCodeToolWindow"
+                    anchor="right"
+                    secondary="true"/>
+    </extensions>
+</idea-plugin>
+
