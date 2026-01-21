@@ -8,7 +8,6 @@ import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.lang.psi.elements.Function
 import com.jetbrains.php.lang.psi.elements.Method
 import com.jetbrains.php.lang.psi.elements.PhpClass
-import com.jetbrains.php.lang.psi.elements.PhpTrait
 import com.zombiedetector.psi.PhpCallVisitor
 import com.zombiedetector.psi.PsiUtils
 
@@ -85,7 +84,7 @@ object CallGraphBuilder {
             // Methods inside classes/traits
             val methods = PsiTreeUtil.findChildrenOfType(psiFile, Method::class.java)
             for (m in methods) {
-                val owner = (m.containingClass?.fqn ?: m.containingTrait?.fqn) ?: continue
+                val owner = m.containingClass?.fqn ?: continue
                 val from = MethodId(ownerFqn = owner, name = m.name, isStatic = m.isStatic)
                 m.accept(PhpCallVisitor(
                     onResolvedTarget = { resolved -> resolvedToSymbolId(resolved)?.let { addEdge(from, it) } },

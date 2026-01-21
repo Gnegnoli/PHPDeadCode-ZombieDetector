@@ -2,11 +2,9 @@ package com.zombiedetector.analysis
 
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.SmartPointerManager
 import com.intellij.psi.SmartPsiElementPointer
-import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.lang.psi.elements.Function
@@ -49,7 +47,7 @@ object DefinitionIndexer {
 
             val fileClasses = PsiTreeUtil.findChildrenOfType(psiFile, PhpClass::class.java)
             for (cls in fileClasses) {
-                val fqn = cls.fqn
+                val fqn = runCatching { cls.fqn }.getOrNull()
                 if (fqn.isNullOrBlank()) continue
                 classes[fqn] = spm.createSmartPsiElementPointer(cls)
                 for (m in cls.methods) {
@@ -60,7 +58,7 @@ object DefinitionIndexer {
 
             val fileTraits = PsiTreeUtil.findChildrenOfType(psiFile, PhpTrait::class.java)
             for (tr in fileTraits) {
-                val fqn = tr.fqn
+                val fqn = runCatching { tr.fqn }.getOrNull()
                 if (fqn.isNullOrBlank()) continue
                 traits[fqn] = spm.createSmartPsiElementPointer(tr)
                 for (m in tr.methods) {
@@ -73,7 +71,7 @@ object DefinitionIndexer {
             for (fn in fileFunctions) {
                 // Only global functions (not methods)
                 if (fn.context is PhpClass || fn.context is PhpTrait) continue
-                val fqn = fn.fqn
+                val fqn = runCatching { fn.fqn }.getOrNull()
                 if (fqn.isNullOrBlank()) continue
                 functions[fqn] = spm.createSmartPsiElementPointer(fn)
             }
@@ -87,15 +85,6 @@ object DefinitionIndexer {
             fileNodes = fileNodes
         )
     }
-
-    private val PhpClass.fqn: String?
-        get() = try { this.fqn } catch (_: Throwable) { null }
-
-    private val PhpTrait.fqn: String?
-        get() = try { this.fqn } catch (_: Throwable) { null }
-
-    private val Function.fqn: String?
-        get() = try { this.fqn } catch (_: Throwable) { null }
 
     val Method.isStatic: Boolean
         get() = try { this.isStatic } catch (_: Throwable) { false }
