@@ -1,6 +1,6 @@
 # PHP Dead & Zombie Code Detector (JetBrains Plugin)
 
-Project-wide dead code + zombie code detection for **PHP** in **PhpStorm / IntelliJ IDEA Ultimate** using **PHP PSI**.
+Project-wide dead code + zombie code detection for **PHP** in **PhpStorm / IntelliJ** using **PHP PSI**.
 
 This plugin performs a **project-wide** static analysis (not file-by-file): it indexes symbol definitions, builds a PSI-resolved call graph, computes reachability from configurable entry points, and reports:
 
@@ -195,12 +195,6 @@ Ignored on purpose:
 - framework routing / DI containers / config-based wiring
 
 This keeps the analyzer fast and deterministic, but may report false positives in highly dynamic codebases.
-
----
-
-## Publishing (Marketplace)
-
-See [`BUILD.md`](BUILD.md) for signing/publishing tasks.
 
 ---
 

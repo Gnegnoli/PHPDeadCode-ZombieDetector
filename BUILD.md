@@ -1,6 +1,6 @@
 # Build & Release Guide
 
-This document describes how to build, run, sign, and publish **PHP Dead & Zombie Code Detector** as a JetBrains plugin.
+This document describes how to build and run  **HP Dead & Zombie Code Detector** as a JetBrains plugin.
 
 ---
 
@@ -55,44 +55,11 @@ The sandbox environment is isolated from your real IDE config, so you can test s
 
 ---
 
-## Signing (Marketplace)
-
-To sign the plugin, provide these environment variables:
-
-- `CERTIFICATE_CHAIN`
-- `PRIVATE_KEY`
-- `PRIVATE_KEY_PASSWORD`
-
-Then run:
-
-```bash
-./gradlew signPlugin
-```
-
----
-
-## Publishing (Marketplace)
-
-Set:
-
-- `PUBLISH_TOKEN`
-
-Then run:
-
-```bash
-./gradlew publishPlugin
-```
-
----
-
 ## Troubleshooting
 
 ### “PHP plugin not found”
 
-This plugin depends on `com.jetbrains.php`. Ensure you run against:
-
-- IntelliJ IDEA **Ultimate** (IU) OR
-- PhpStorm (in production install)
+This plugin depends on `com.jetbrains.php`.
 
 ### Slow first build
 
